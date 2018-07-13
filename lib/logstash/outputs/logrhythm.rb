@@ -53,7 +53,7 @@ class LogStash::Outputs::LogRhythm < LogStash::Outputs::Base
     "informational",
     "debug",
   ]
-
+  
   # syslog server address to connect to
   config :host, :validate => :string, :required => true
 
@@ -81,13 +81,46 @@ class LogStash::Outputs::LogRhythm < LogStash::Outputs::Base
   # SSL key passphrase
   config :ssl_key_passphrase, :validate => :password, :default => nil
 
+  # use label parsing for severity and facility levels
+  # use priority field if set to false
+  config :use_labels, :validate => :boolean, :default => true
+
+  # syslog priority
+  # The new value can include `%{foo}` strings
+  # to help you build a new value from other parts of the event.
+  config :priority, :validate => :string, :default => "%{syslog_pri}"
+
+  # facility label for syslog message
+  # default fallback to user-level as in rfc3164
+  # The new value can include `%{foo}` strings
+  # to help you build a new value from other parts of the event.
+  config :facility, :validate => :string, :default => "user-level"
+
+  # severity label for syslog message
+  # default fallback to notice as in rfc3164
+  # The new value can include `%{foo}` strings
+  # to help you build a new value from other parts of the event.
+  config :severity, :validate => :string, :default => "notice"
+
+  # source host for syslog message. The new value can include `%{foo}` strings
+  # to help you build a new value from other parts of the event.
+  config :sourcehost, :validate => :string, :default => "%{host}"
+
   # application name for syslog message. The new value can include `%{foo}` strings
   # to help you build a new value from other parts of the event.
   config :appname, :validate => :string, :default => "LOGSTASH"
 
+  # process id for syslog message. The new value can include `%{foo}` strings
+  # to help you build a new value from other parts of the event.
+  config :procid, :validate => :string, :default => "-"
+
   # message text to log. The new value can include `%{foo}` strings
   # to help you build a new value from other parts of the event.
   config :message, :validate => :string, :default => "%{message}"
+
+  # message id for syslog message. The new value can include `%{foo}` strings
+  # to help you build a new value from other parts of the event.
+  config :msgid, :validate => :string, :default => "-"
 
   # syslog message format: you can choose between rfc3164 or rfc5424
   config :rfc, :validate => ["rfc3164", "rfc5424"], :default => "rfc3164"
