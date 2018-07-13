@@ -15,8 +15,8 @@ require "logstash/codecs/plain"
 # your messages don't have a `message` field or if you for some other
 # reason want to change the emitted message, modify the `message`
 # configuration option.
-class LogStash::Outputs::Syslog < LogStash::Outputs::Base
-  config_name "syslog"
+class LogStash::Outputs::LogRhythm < LogStash::Outputs::Base
+  config_name "logrhythm"
 
   FACILITY_LABELS = [
     "kernel",
